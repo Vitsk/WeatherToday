@@ -4,6 +4,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 // Is development or production mode
@@ -26,6 +27,8 @@ const optimization = () => {
 
   return config;
 }
+
+
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -66,6 +69,11 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'
     }),
+    new CopyWebpackPlugin([
+      {
+        from: 'img/icons', to: 'img',
+      },
+    ]),
   ],
 
   module: {

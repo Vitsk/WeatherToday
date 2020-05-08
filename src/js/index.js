@@ -7,7 +7,7 @@ const inputSearch        = document.querySelector('#input-search');
 const btnSearch          = document.querySelector('#btn-search');
 const weather            = document.querySelector('.weather');
 const weatherHeader      = document.querySelector('.weather-header');
-const weatherIcons       = document.querySelector('.weather-icons');
+const weatherIcons       = document.querySelector('.weather-icon');
 const weatherInfo        = document.querySelector('.weather-info');
 
 inputForm.addEventListener('submit', btnHandler);
@@ -34,10 +34,12 @@ function requestWeather(value) {
 function renderContent(content) {
   const cityName = content.name;
   const weatherTemp = `${Math.round(content.main.temp)}°C`;
+  const weatherIcon = content.weather[0].icon;
   const weatherCloud = content.weather[0].main;
 
   weather.classList.add('weather-active');
   weatherHeader.textContent = cityName;
+  weatherIcons.innerHTML = `<img width="80px" height="80px" src="img/${weatherIcon}.png" alt="icon">`;
   weatherInfo.textContent = `${weatherTemp}, ${weatherCloud}`;
   console.log(content);
 }
