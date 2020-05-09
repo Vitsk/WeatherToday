@@ -40,7 +40,7 @@ module.exports = {
   },
 
   output: {
-    filename: '[name].[contenthash].js',
+    filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist')
   },
 
@@ -67,7 +67,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: `[name].${isDev ? "style" : "[hash]"}.css`
     }),
     new CopyWebpackPlugin([
       {

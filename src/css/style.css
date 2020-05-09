@@ -1,6 +1,12 @@
 body {
   background-color: black;
   text-align: center;
+  text-shadow: 2px 2px 2px black;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .bg-image {
@@ -25,7 +31,7 @@ body {
 
 .search-title {
   color: #fff;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .city-input {
@@ -41,10 +47,10 @@ body {
   border: 1px solid #fff;
   border-radius: 10px;
   color: #fff;
-  width: 350px;
-  height: 200px;
+  width: 400px;
+  height: 250px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 30px;
   z-index: 3;
   opacity: 0;
   transition: opacity .2s linear;
@@ -60,8 +66,27 @@ body {
   z-index: 3;
 }
 
-
 .weather-info {
   font-size: 25px;
   z-index: 3;
+}
+
+.requests {
+  margin-top: 30px;
+}
+
+.requests-output {
+  display: flex;
+  justify-content: space-around;
+}
+
+.requests-header {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.requests-last {
+  border-radius: 10px;
+  color: #fff;
+  font-size: 24px;
 }
