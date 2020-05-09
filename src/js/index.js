@@ -3,16 +3,16 @@ import lastRequest from './lastRequests';
 
 const apiKey = '1ebec06705131d28fbf066fc805f88a8';
 
-const inputForm          = document.querySelector('#input-form');
-const inputSearch        = document.querySelector('#input-search');
-const btnSearch          = document.querySelector('#btn-search');
-const weather            = document.querySelector('.weather');
-const weatherHeader      = document.querySelector('.weather-header');
-const weatherIcons       = document.querySelector('.weather-icon');
-const weatherInfo        = document.querySelector('.weather-info');
+const inputForm = document.querySelector('#input-form');
+const inputSearch = document.querySelector('#input-search');
+const weather = document.querySelector('.weather');
+const weatherHeader = document.querySelector('.weather-header');
+const weatherIcons = document.querySelector('.weather-icon');
+const weatherInfo = document.querySelector('.weather-info');
 
 const allRequests = getLastRequest();
 lastRequest(allRequests);
+
 
 inputForm.addEventListener('submit', btnHandler);
 
@@ -60,7 +60,7 @@ function setRequests(value) {
   }
 
   if (all[4]) all.pop();
-  
+
   all.unshift(value);
   localStorage.setItem("request", JSON.stringify(all));
 }
@@ -68,3 +68,20 @@ function setRequests(value) {
 function getLastRequest() {
   return JSON.parse(localStorage.getItem('request') || '[]');
 }
+
+// Handler on last request
+const requestsListener = document.querySelectorAll('.request-listener');
+requestsListener.forEach((item) => {
+  item.addEventListener('click', () => {
+    const value = item.textContent;
+
+    requestWeather(value)
+      .then(renderContent)
+      .catch(() => {
+        weather.classList.add('weather-active');
+        weatherHeader.textContent = 'We didn\'t find your city'
+        weatherIcons.innerHTML = '';
+        weatherInfo.textContent = '';
+      })
+  });
+});

@@ -89,4 +89,9 @@ body {
   border-radius: 10px;
   color: #fff;
   font-size: 24px;
+  cursor: pointer;
+}
+
+.requests-last:hover {
+  text-decoration: underline;
 }
