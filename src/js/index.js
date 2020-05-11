@@ -1,7 +1,6 @@
 import '@/css/style.css';
-import lastRequest from './lastRequests';
-
-const apiKey = '1ebec06705131d28fbf066fc805f88a8';
+import renderRequests from './lastRequests';
+import requestWeather from './requestWeather';
 
 const inputForm = document.querySelector('#input-form');
 const inputSearch = document.querySelector('#input-search');
@@ -11,16 +10,14 @@ const weatherIcons = document.querySelector('.weather-icon');
 const weatherInfo = document.querySelector('.weather-info');
 
 const allRequests = getLastRequest();
-lastRequest(allRequests);
-
+renderRequests(allRequests);
+lastRequestHandler();
 
 inputForm.addEventListener('submit', btnHandler);
 
 function btnHandler(event) {
   event.preventDefault();
   const inputValue = inputSearch.value;
-
-  setRequests(inputValue);
 
   requestWeather(inputValue)
     .then(renderContent)
@@ -32,12 +29,6 @@ function btnHandler(event) {
     })
 }
 
-function requestWeather(value) {
-  return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${value}&units=metric&appid=${apiKey}`)
-    .then(response => response.json())
-    .catch(e => console.error(e))
-}
-
 function renderContent(content) {
   const cityName = content.name;
   const countryName = content.sys.country;
@@ -45,22 +36,30 @@ function renderContent(content) {
   const weatherIcon = content.weather[0].icon;
   const weatherCloud = content.weather[0].main;
 
-  weather.classList.add('weather-active');
-  weatherHeader.textContent = `${cityName}, ${countryName}`;
-  weatherIcons.innerHTML = `<img src="img/${weatherIcon}.png" alt="icon">`;
-  weatherInfo.textContent = `${weatherTemp}, ${weatherCloud}`;
-  console.log(content);
+  if (weather.classList.contains('weather-active')) {
+    weather.classList.toggle('weather-active', false)
+  }
+
+  setTimeout(() => {
+    weather.classList.toggle('weather-active');
+    weatherHeader.textContent = `${cityName}, ${countryName}`;
+    weatherIcons.innerHTML = `<img src="img/${weatherIcon}.png" alt="icon">`;
+    weatherInfo.textContent = `${weatherTemp}, ${weatherCloud}`;
+  }, 200);
+
+  setLastRequests(cityName);
+
+  const allRequests = getLastRequest();
+  renderRequests(allRequests);
+  lastRequestHandler();
 }
 
-function setRequests(value) {
+function setLastRequests(value) {
   const all = getLastRequest();
-
   if (all.includes(value) === true) {
     return;
   }
-
   if (all[4]) all.pop();
-
   all.unshift(value);
   localStorage.setItem("request", JSON.stringify(all));
 }
@@ -70,18 +69,20 @@ function getLastRequest() {
 }
 
 // Handler on last request
-const requestsListener = document.querySelectorAll('.request-listener');
-requestsListener.forEach((item) => {
-  item.addEventListener('click', () => {
-    const value = item.textContent;
+function lastRequestHandler() {
+  const requestsListener = document.querySelectorAll('.request-listener');
+  requestsListener.forEach((item) => {
+    item.addEventListener('click', () => {
+      const value = item.textContent;
 
-    requestWeather(value)
-      .then(renderContent)
-      .catch(() => {
-        weather.classList.add('weather-active');
-        weatherHeader.textContent = 'We didn\'t find your city'
-        weatherIcons.innerHTML = '';
-        weatherInfo.textContent = '';
-      })
+      requestWeather(value)
+        .then(renderContent)
+        .catch(() => {
+          weather.classList.add('weather-active');
+          weatherHeader.textContent = 'We didn\'t find your city'
+          weatherIcons.innerHTML = '';
+          weatherInfo.textContent = '';
+        })
+    });
   });
-});
+}

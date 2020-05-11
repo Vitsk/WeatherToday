@@ -20,4 +20,3 @@ export default function renderRequests(content) {
 
   requestOutput.innerHTML = html;
 }
-
